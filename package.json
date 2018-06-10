@@ -1,0 +1,19 @@
+{
+  "name": "lazylanger",
+  "version": "1.0.0",
+  "description": "Lazy langer is a tool to parse subtitle files and return the words and number of occurances from them.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/petar-prog91/LazyLanger.git"
+  },
+  "author": "Petar Milutinovic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/petar-prog91/LazyLanger/issues"
+  },
+  "homepage": "https://github.com/petar-prog91/LazyLanger#readme"
+}
