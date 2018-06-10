@@ -56,10 +56,12 @@ class Server {
     }
 
     private cleanupText(subtitleTexts: String): String {
-        // Remove lines that start with numbers
         const cleanText = subtitleTexts
                             .replace(/[^a-zA-Z]+/g, ' ') // Remove everything except letters
                             .replace(/(?:\\[rn]|[\r\n]+)+/g, ' ') // Remove \r\n etc
+                            .replace(/^ /g, '') // Remove beginning empty space
+                            .replace(/ /g, '\n') // Replace every space with new line
+                            .toLowerCase() // Convert everything to lower case
         return cleanText
     }
 }
