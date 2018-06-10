@@ -4,7 +4,7 @@ LazyLanger is a tool to extract most common words from a subtitle, and sort them
 
 ## ToDo
 
-- [ ] Read a text file (subtitle) or multiple text files and merge into one file
+- [x] Read a text file (subtitle) or multiple text files and merge into one file
 - [ ] Remove lines that start with numbers
 - [ ] Convert comma, dot, ? and ! into spaces
 - [ ] Split all words by space

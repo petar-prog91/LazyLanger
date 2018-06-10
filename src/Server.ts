@@ -1,7 +1,6 @@
 import * as express from 'express'
 import * as multer from 'multer'
 import * as fs from 'fs'
-import * as path from 'path'
 
 import { subtitleFilter } from './utils';
 
@@ -26,10 +25,11 @@ class Server {
 
         router.post('/upload', upload.array('subtitle'), async (req, res) => {
             try {
-                const filesContent = this.readFilesData(req.files)
+                const rawData = this.readFilesData(req.files)
+                const cleanText = this.cleanupText(rawData)
                 res.json({
                     message: 'So you tried to send something! Let\' continue with implementations',
-                    subtitleText: filesContent
+                    subtitleText: cleanText
                 })
             } catch (err) {
                 res.sendStatus(400)
@@ -51,8 +51,16 @@ class Server {
         return filesData
     }
 
-    private deleteFile(filePath: string) {
+    private deleteFile(filePath: string): void {
         fs.unlink(filePath)
+    }
+
+    private cleanupText(subtitleTexts: String): String {
+        // Remove lines that start with numbers
+        const cleanText = subtitleTexts
+                            .replace(/[^a-zA-Z]+/g, ' ') // Remove everything except letters
+                            .replace(/(?:\\[rn]|[\r\n]+)+/g, ' ') // Remove \r\n etc
+        return cleanText
     }
 }
 
