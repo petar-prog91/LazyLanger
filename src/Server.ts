@@ -25,12 +25,8 @@ class Server {
 
         router.post('/upload', upload.array('subtitle'), async (req, res) => {
             try {
-                const rawData = this.readFilesData(req.files)
-                const cleanText = this.cleanupText(rawData)
-                const cleanArray = this.convertToArray(cleanText)
-                const sortedByFrequency = this.sortByFrequency(cleanArray)
-                const sortedByOccurence = this.sortProperties(sortedByFrequency)
-                const prettyArray = this.prettyArray(sortedByOccurence)
+                const prettyArray = this.prepareDataForPrint(req.files)
+
                 res.json({
                     message: 'So you tried to send something! Let\' continue with implementations',
                     subtitleText: prettyArray
@@ -41,6 +37,17 @@ class Server {
         })
 
         this.express.use('/', router)
+    }
+
+    private prepareDataForPrint(files: Array<multer.Files>): Array<any> {
+        const rawData = this.readFilesData(files)
+        const cleanText = this.cleanupText(rawData)
+        const cleanArray = this.convertToArray(cleanText)
+        const sortedByFrequency = this.sortByFrequency(cleanArray)
+        const sortedByOccurence = this.sortProperties(sortedByFrequency)
+        const prettyArray = this.prettyArray(sortedByOccurence)
+
+        return prettyArray
     }
 
     private readFilesData(subtitleFiles: Array<multer.Files>): String {
@@ -73,7 +80,7 @@ class Server {
         return cleanText
     }
 
-    private sortByFrequency(array: Array<any>) {
+    private sortByFrequency(array: Array<any>): Object {
         var freqMap = {};
 
         array.forEach(function(word) {
@@ -106,7 +113,7 @@ class Server {
         return sortable; // array in format [ [ key1, val1 ], [ key2, val2 ], ... ]
     }
 
-    private prettyArray(array: Array<String>): Array<any> {
+    private prettyArray(array: Array<String>): Array<Object> {
         const prettifiedArray = array.reverse().map((el) => { 
             return { word: el[0], count: el[1] }
         })
