@@ -28,9 +28,12 @@ class Server {
                 const rawData = this.readFilesData(req.files)
                 const cleanText = this.cleanupText(rawData)
                 const cleanArray = this.convertToArray(cleanText)
+                const sortedByFrequency = this.sortByFrequency(cleanArray)
+                const sortedByOccurence = this.sortProperties(sortedByFrequency)
+                const prettyArray = this.prettyArray(sortedByOccurence)
                 res.json({
                     message: 'So you tried to send something! Let\' continue with implementations',
-                    subtitleText: cleanArray
+                    subtitleText: prettyArray
                 })
             } catch (err) {
                 res.sendStatus(400)
@@ -68,6 +71,47 @@ class Server {
                             .replace(/ /g, '\n') // Replace every space with new line
                             .toLowerCase() // Convert everything to lower case
         return cleanText
+    }
+
+    private sortByFrequency(array: Array<any>) {
+        var freqMap = {};
+
+        array.forEach(function(word) {
+            if (!freqMap[word]) {
+                freqMap[word] = 0;
+            }
+            freqMap[word] += 1;
+        });
+    
+        return freqMap;
+    }
+
+    /**
+     * Sort object properties (only own properties will be sorted).
+     * @param {object} obj object to sort properties
+     * @returns {Array} array of items in [[key,value],[key,value],...] format.
+     */
+    private sortProperties(obj: Object): Array<any> {
+        const sortable = [];
+        for (const key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                sortable.push([key, obj[key]]);
+            }
+                
+            sortable.sort((a, b) => {
+                return a[1] - b[1];
+            })
+        }
+
+        return sortable; // array in format [ [ key1, val1 ], [ key2, val2 ], ... ]
+    }
+
+    private prettyArray(array: Array<String>): Array<any> {
+        const prettifiedArray = array.reverse().map((el) => { 
+            return { word: el[0], count: el[1] }
+        })
+
+        return prettifiedArray
     }
 }
 
