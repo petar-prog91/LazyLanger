@@ -26,9 +26,10 @@ class Server {
 
         router.post('/upload', upload.array('subtitle'), async (req, res) => {
             try {
+                const filesContent = this.readFilesData(req.files)
                 res.json({
                     message: 'So you tried to send something! Let\' continue with implementations',
-                    file: req.files
+                    subtitleText: filesContent
                 })
             } catch (err) {
                 res.sendStatus(400)
@@ -36,6 +37,22 @@ class Server {
         })
 
         this.express.use('/', router)
+    }
+
+    private readFilesData(subtitleFiles: Array<multer.Files>): String {
+        let filesData = ''
+        subtitleFiles.forEach(element => {
+            const subtitleText = fs.readFileSync(element.path, 'UTF-8')
+
+            filesData = filesData + subtitleText
+            this.deleteFile(element.path)
+        })
+
+        return filesData
+    }
+
+    private deleteFile(filePath: string) {
+        fs.unlink(filePath)
     }
 }
 
