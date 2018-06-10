@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/petar-prog91/LazyLanger/issues"
   },
-  "homepage": "https://github.com/petar-prog91/LazyLanger#readme"
+  "homepage": "https://github.com/petar-prog91/LazyLanger#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
 }
