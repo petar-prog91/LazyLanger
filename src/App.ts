@@ -16,11 +16,12 @@ class App {
             })
         })
 
-        router.get('/', (req, res) => {
+        router.post('/', (req, res) => {
             res.json({
-                message: 'Lazy Language to the rescue for us lazy monkeys trying to learn a new language!'
+                message: 'So you tried to send something! Let\' continue with implementations'
             })
         })
+
         this.express.use('/', router)
     }
 }
