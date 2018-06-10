@@ -27,9 +27,10 @@ class Server {
             try {
                 const rawData = this.readFilesData(req.files)
                 const cleanText = this.cleanupText(rawData)
+                const cleanArray = this.convertToArray(cleanText)
                 res.json({
                     message: 'So you tried to send something! Let\' continue with implementations',
-                    subtitleText: cleanText
+                    subtitleText: cleanArray
                 })
             } catch (err) {
                 res.sendStatus(400)
@@ -53,6 +54,10 @@ class Server {
 
     private deleteFile(filePath: string): void {
         fs.unlink(filePath)
+    }
+
+    private convertToArray(subtitleTexts: String): Array<String> {
+        return subtitleTexts.split(/\n/)
     }
 
     private cleanupText(subtitleTexts: String): String {
